@@ -24,6 +24,7 @@ int save_file(char* fname, Moto a, Moto b, Moto c) {
 	if (a.damage && fprintf(out, "%s %d %s %d %d\n", a.brand, a.year, a.reg_date, a.power, a.damage) < 0 ||
 		b.damage && fprintf(out, "%s %d %s %d %d\n", b.brand, b.year, b.reg_date, b.power, b.damage) < 0 ||
 		c.damage && fprintf(out, "%s %d %s %d %d\n", c.brand, c.year, c.reg_date, c.power, c.damage) < 0) {
+		puts("Ошибка при записи значений в файл");
 		fclose(out);
 		return 0;
 	}
