@@ -4,17 +4,18 @@
 
 #include <stdio.h>
 #include <locale.h>
-#include <math.h>
 
 typedef struct {
-	double x;
-	double y;
-	char name;
-} Point;
+	char brand[20];
+	int year;
+	char reg_date[15];
+	int power;
+	int damage;
+} Moto;
 
-Point input_point();
-void print_point(Point);
-int check(Point, Point, Point);
-int save_file(char* fname, Point a, Point b, Point c, int res);
+Moto input_moto();
+void print_moto(Moto);
+int check(Moto, Moto);
+int save_file(char *fname, Moto a, Moto b, Moto c);
 
 #endif

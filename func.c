@@ -1,40 +1,31 @@
 #include "func.h"
 
-Point input_point() {
-	Point z;
-	puts("Введите точку по примеру: name(x, y)");
-	scanf(" %c(%lf, %lf)", &z.name, &z.x, &z.y);
-	return z;
+Moto input_moto() {
+	Moto a;
+	puts("Введите данные мотоцикла по примеру: Бренд Год Дата_рег Мощность Повреждения");
+	scanf(" %30s %d %15s %d %d", &a.brand, &a.year, &a.reg_date, &a.power, &a.damage);
+	return a;
 }
 
-void print_point(Point z) {
-	printf("%c(%lf, %lf)\n", z.name, z.x, z.y);
+void print_moto(Moto a) {
+	printf("Марка: %s | Год: %d | Дата_рег: %s | Мощность: %d | Повреждения: %d\n",
+		a.brand, a.year, a.reg_date, a.power, a.damage);
 }
 
-int check(Point a, Point b, Point c) {
-	double state = (b.x - a.x) * (c.y - a.y) - (b.y - a.y) * (c.x - a.x);
-	if (fabs(state) < 1e-9) return 1;
-	else return 0;
+int check(Moto a, Moto b) {
+	if (a.power > b.power) return 1;
+	return 0;
 }
 
-int save_file(char* fname, Point a, Point b, Point c, int res) {
-	FILE* out; /*Создание указателя типа FILE который хранит структуру файла */
+int save_file(char* fname, Moto a, Moto b, Moto c) {
+	FILE* out;
+	if ((out = fopen(fname, "w")) == NULL) return 0;
 
-	puts("Создание файла: ");
-	//Функция fopen открывает файл, если его нет, то NULL
-	if ((out = fopen(fname, "a")) == NULL) {
-		printf("Ошибка открытия файла для записи");
+	if (a.damage && fprintf(out, "%s %d %s %d %d\n", a.brand, a.year, a.reg_date, a.power, a.damage) < 0 ||
+		b.damage && fprintf(out, "%s %d %s %d %d\n", b.brand, b.year, b.reg_date, b.power, b.damage) < 0 ||
+		c.damage && fprintf(out, "%s %d %s %d %d\n", c.brand, c.year, c.reg_date, c.power, c.damage) < 0) {
+		fclose(out);
 		return 0;
 	}
-	//Работа с файлом
-	fprintf(out, "%c(%lf, %lf)\n"
-				 "%c(%lf, %lf)\n"
-				 "%c(%lf, %lf)\n"
-				 "%d\n", a.name, a.x, a.y, b.name, b.x, b.y, c.name, c.x, c.y, res);
-	/*Закрытие файла после работы(ОБЯЗАТЕЛЬНО)*/
-	if (fclose(out) != NULL) {
-		printf("Ошибка закрытия файла");
-		return 0;
-	}
-	return 1;
+	return fclose(out) == 0;
 }
